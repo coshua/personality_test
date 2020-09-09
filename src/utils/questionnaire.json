@@ -1,0 +1,16 @@
+[
+  {
+    "question": "슬픔은 나누면",
+    "response": [
+      { "type": "T", "answer": "슬픈 사람이 둘이 된다" },
+      { "type": "F", "answer": "반이 된다" }
+    ]
+  },
+  {
+    "question": "약속 시간에",
+    "response": [
+      { "type": "P", "answer": "자주 늦는다" },
+      { "type": "J", "answer": "잘 늦지 않는다" }
+    ]
+  }
+]

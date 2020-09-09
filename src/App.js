@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import questionnaire from "./utils/questionnaire";
+import Landing from "./components/Landing";
+import Question from "./components/Question";
+import Result from "./components/Result";
 
-function App() {
+const QUESTIONS_LENGTH = questionnaire.length;
+const initialState = {
+  E: 0,
+  I: 0,
+  N: 0,
+  S: 0,
+  T: 0,
+  F: 0,
+  J: 0,
+  P: 0,
+};
+const App = () => {
+  const [score, setScore] = useState(initialState);
+  const [start, setStart] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  const startTest = () => {
+    setScore(initialState);
+    setIndex(0);
+    setStart(true);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!start ? (
+        <Landing />
+      ) : index === QUESTIONS_LENGTH - 1 ? (
+        <Result />
+      ) : (
+        <Question />
+      )}
     </div>
   );
-}
+};
 
 export default App;
