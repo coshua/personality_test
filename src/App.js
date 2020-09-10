@@ -27,14 +27,41 @@ const App = () => {
     setStart(true);
   };
 
+  const refreshPage = () => {
+    setScore(initialState);
+    setIndex(0);
+    setStart(false);
+  };
+
+  const handleAnswer = (type) => {
+    setScore({
+      ...score,
+      [type]: score[type] + 1,
+    });
+    setIndex(index + 1);
+  };
+
+  const calcResult = () => {
+    let str = "";
+    str += score.E > score.I ? "E" : "I";
+    str += score.N > score.S ? "N" : "S";
+    str += score.T > score.F ? "T" : "F";
+    str += score.J > score.P ? "J" : "P";
+    return str;
+  };
+
   return (
     <div>
       {!start ? (
-        <Landing />
-      ) : index === QUESTIONS_LENGTH - 1 ? (
-        <Result />
+        <Landing startTest={startTest} />
+      ) : index === QUESTIONS_LENGTH ? (
+        <Result
+          calcResult={calcResult}
+          startTest={startTest}
+          refreshPage={refreshPage}
+        />
       ) : (
-        <Question />
+        <Question index={index} handleAnswer={handleAnswer} />
       )}
     </div>
   );

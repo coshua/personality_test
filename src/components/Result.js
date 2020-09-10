@@ -1,11 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-const Result = ({ content }) => {
+const Result = ({ calcResult, refreshPage, startTest }) => {
+  const resultType = calcResult();
   return (
     <>
       <div className="result-main"></div>
+      {resultType}
       <div className="control"></div>
+      <button onClick={(e) => refreshPage()}>처음으로</button>
+      <button onClick={(e) => startTest()}>다시하기</button>
       <div className="share"></div>
     </>
     //SNS로 공유하기
@@ -13,7 +16,7 @@ const Result = ({ content }) => {
 };
 
 Result.propTypes = {
-  content: PropTypes.object.isRequired, //solid constructure
+  //solid constructure
 };
 
 export default Result;

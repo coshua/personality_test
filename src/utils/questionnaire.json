@@ -12,5 +12,19 @@
       { "type": "P", "answer": "자주 늦는다" },
       { "type": "J", "answer": "잘 늦지 않는다" }
     ]
+  },
+  {
+    "question": "사람을 만나면",
+    "response": [
+      { "type": "E", "answer": "대체로 에너지를 얻는다" },
+      { "type": "I", "answer": "모아둔 에너지를 사용한다" }
+    ]
+  },
+  {
+    "question": "아무 생각 없이 멍 때리는 것이",
+    "response": [
+      { "type": "S", "answer": "익숙하고 편하다" },
+      { "type": "N", "answer": "어렵다. 잡생각이 파도처럼 밀려온다" }
+    ]
   }
 ]
