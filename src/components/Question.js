@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import questionnaire from "../utils/questionnaire";
 import styled from "styled-components";
 

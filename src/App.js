@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
 import Question from "./components/Question";
 import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
-import useSound from "use-sound";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
-
-const { Howl, Howler } = require("howler");
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,8 +39,6 @@ const initialState = {
   J: 0,
   P: 0,
 };
-
-const playlist = questionnaire.map((each) => each.music);
 
 const App = () => {
   // const [play, { stop, isPlaying, sound }] = useSound(
