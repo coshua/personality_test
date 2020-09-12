@@ -14,7 +14,7 @@ const StyledButton = styled.button`
   padding-right: 1rem;
   -webkit-transition: opacity 1s ease-in-out;
   transition: opacity 1s ease-in-out;
-
+  margin: 1rem;
   /* 크기 */
   height: 2rem;
   font-size: 1rem;
@@ -28,7 +28,6 @@ const StyledButton = styled.button`
   &:active {
     background: #1c7ed6;
   }
-
   /* 기타 */
   & + & {
     margin-left: 1rem;

@@ -3,19 +3,13 @@ import styled from "styled-components";
 import Button from "./Button";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  top: 20vh;
-  margin: 2rem;
+  text-align: center;
 `;
 
-const Landing = ({ startTest, sound }) => {
+const Landing = ({ startTest }) => {
   return (
     <Container>
-      <div>당신의 내면에 귀 기울어보세요</div>
+      당신의 내면에 귀 기울어보세요
       <div className="control">
         <Button
           onClick={(e) => {

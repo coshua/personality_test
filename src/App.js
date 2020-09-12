@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
 import Question from "./components/Question";
@@ -6,25 +6,43 @@ import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
-
+import img from "./img/sinchon.jpg";
 const GlobalStyle = createGlobalStyle`
+  html {
+    height: 100%;
+  }
   body {
-    @import url('https://fonts.googleapis.com/earlyaccess/notosanskr.css');
     font-family: "Noto Sans KR", sans-serif;
-
+    height: 100%;
     background-color: #af8c9d;
-    background-image: linear-gradient(315deg, #af8c9d 0%, #8cacac 74%);
+    background-color: grey;
+    background-image: ${(props) =>
+      `url(${props.url})` ||
+      "linear-gradient(315deg, #af8c9d 0%, #8cacac 74%)"};
     background-repeat: no-repeat;
     background-attachment: fixed;
-    margin: 50px;
-    padding: 50px;
+    background-blend-mode: screen;
   }
 `;
 
 const Container = styled.div`
-  max-width: 1024px;
-  width: 90%;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const Content = styled.div`
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Span = styled.span`
+  margin: 2rem auto;
+  align-items: center;
 `;
 
 const QUESTIONS_LENGTH = questionnaire.length;
@@ -40,18 +58,89 @@ const initialState = {
   P: 0,
 };
 
-const App = () => {
-  // const [play, { stop, isPlaying, sound }] = useSound(
-  //   questionnaire[index].music,
-  //   {
-  //     volume: 0.5,
-  //     interrupt: true,
-  //   }
-  // );
+const initialMusic = [
+  {
+    title: "memories",
+    playing: false,
+    volume: 0.5,
+    src: Playlist[0],
+    ref: null,
+  },
+  {
+    title: "tomorrow",
+    playing: false,
+    volume: 0.5,
+    src: Playlist[1],
+    ref: null,
+  },
+  {
+    title: "ukulele",
+    playing: false,
+    volume: 0.5,
+    src: Playlist[2],
+    ref: null,
+  },
+];
 
+const App = () => {
+  const memoriesRef = useRef();
+  const tomorrowRef = useRef();
+  const ukuleleRef = useRef();
+
+  const RefArray = [memoriesRef, tomorrowRef, ukuleleRef];
+
+  useEffect(() => {
+    setMusic([
+      { title: "memories", playing: false, src: Playlist[0], ref: RefArray[0] },
+      { title: "tomorrow", playing: false, src: Playlist[1], ref: RefArray[1] },
+      { title: "ukulele", playing: false, src: Playlist[2], ref: RefArray[2] },
+    ]);
+  }, []);
   const [score, setScore] = useState(initialState);
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
+  const [music, setMusic] = useState(initialMusic);
+
+  const MusicList = Playlist.map((audio, index) => {
+    return (
+      <ReactHowler
+        key={index}
+        src={audio.src}
+        preload={true}
+        loop={true}
+        playing={music[index].playing}
+        ref={music[index].ref}
+        volume={music[index].volume}
+      />
+    );
+  });
+
+  const pauseMusic = () => {
+    setMusic(music.map((music) => ({ ...music, playing: false })));
+  };
+
+  const stopMusic = (fade = 3000) => {
+    let currentMusic = music.filter((music) => music.playing === true);
+    console.log(currentMusic);
+    if (currentMusic.length >= 1) {
+      currentMusic[0].ref.current.howler.fade(0.5, 0, fade);
+      setTimeout(() => currentMusic[0].ref.current.stop(), fade);
+    }
+  };
+
+  const playMusic = (title = "memories", fade = 3000) => {
+    stopMusic();
+    let newMusic = music.map((music) =>
+      music.title === title
+        ? { ...music, playing: true }
+        : { ...music, playing: false }
+    );
+    setMusic(newMusic);
+    let currentMusic = music.filter((music) => music.title === title);
+    if (currentMusic.length >= 1) {
+      currentMusic[0].ref.current.howler.fade(0, 0.5, fade);
+    }
+  };
 
   const startTest = () => {
     setScore(initialState);
@@ -84,22 +173,42 @@ const App = () => {
 
   return (
     <Container>
-      <GlobalStyle />
-      <ReactHowler preload={true} src={Playlist[index]} playing={true} />
-      {/* <button onClick={(e) => stop()}>
+      <GlobalStyle url={img} />
+      <Content>
+        {MusicList}
+        {/* <button onClick={(e) => stop()}>
         {isPlaying ? "Mute" : "Not playing"}
       </button> */}
-      {!start ? (
-        <Landing startTest={startTest} />
-      ) : index === QUESTIONS_LENGTH ? (
-        <Result
-          calcResult={calcResult}
-          startTest={startTest}
-          refreshPage={refreshPage}
-        />
-      ) : (
-        <Question index={index} handleAnswer={handleAnswer} />
-      )}
+        {!start ? (
+          <Landing startTest={startTest} />
+        ) : index === QUESTIONS_LENGTH ? (
+          <Result
+            calcResult={calcResult}
+            startTest={startTest}
+            refreshPage={refreshPage}
+          />
+        ) : (
+          <Question index={index} handleAnswer={handleAnswer} />
+        )}
+      </Content>
+      <Span>
+        <i
+          className="fas fa-volume-mute fa-lg"
+          onClick={(e) => pauseMusic()}
+        ></i>
+        <i
+          className="fas fa-volume-mute fa-lg"
+          onClick={(e) => stopMusic()}
+        ></i>
+        <i
+          className="fas fa-headphones fa-lg"
+          onClick={(e) => playMusic("ukulele")}
+        ></i>
+        <i
+          className="fas fa-headphones fa-lg"
+          onClick={(e) => playMusic("tomorrow")}
+        ></i>
+      </Span>
     </Container>
   );
 };
