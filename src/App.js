@@ -6,7 +6,8 @@ import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
-import img from "./img/sinchon.jpg";
+import img from "./img/flowers.jpg";
+import video from "./video/rain1920.mp4";
 const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
@@ -14,14 +15,17 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: "Noto Sans KR", sans-serif;
     height: 100%;
-    background-color: #af8c9d;
-    background-color: grey;
-    background-image: ${(props) =>
-      `url(${props.url})` ||
-      "linear-gradient(315deg, #af8c9d 0%, #8cacac 74%)"};
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-blend-mode: screen;
+
+  }
+
+  video {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    top: 0;
   }
 `;
 
@@ -29,11 +33,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 `;
 
 const Content = styled.div`
   flex: 1;
-
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -95,6 +100,12 @@ const App = () => {
       { title: "tomorrow", playing: false, src: Playlist[1], ref: RefArray[1] },
       { title: "ukulele", playing: false, src: Playlist[2], ref: RefArray[2] },
     ]);
+    window.Kakao.init("77148d309b8680577a6ff34d93e29776");
+    console.log(window.Kakao.isInitialized());
+    window.Kakao.Link.createScrapButton({
+      container: "#create-kakao-link-btn",
+      requestUrl: "https://find-your-personality.netlify.app",
+    });
   }, []);
   const [score, setScore] = useState(initialState);
   const [start, setStart] = useState(false);
@@ -121,7 +132,6 @@ const App = () => {
 
   const stopMusic = (fade = 3000) => {
     let currentMusic = music.filter((music) => music.playing === true);
-    console.log(currentMusic);
     if (currentMusic.length >= 1) {
       currentMusic[0].ref.current.howler.fade(0.5, 0, fade);
       setTimeout(() => currentMusic[0].ref.current.stop(), fade);
@@ -174,6 +184,10 @@ const App = () => {
   return (
     <Container>
       <GlobalStyle url={img} />
+      <video muted autoPlay loop>
+        <source src={video} type="video/mp4" />
+        <strong>Your browser does not support the video tag</strong>
+      </video>
       <Content>
         {MusicList}
         {/* <button onClick={(e) => stop()}>
@@ -208,6 +222,55 @@ const App = () => {
           className="fas fa-headphones fa-lg"
           onClick={(e) => playMusic("tomorrow")}
         ></i>
+        <button
+          onClick={(e) =>
+            window.Kakao.Link.sendCustom({
+              templateId: 36312,
+              templateArgs: {
+                image_url: img,
+              },
+            })
+          }
+        >
+          Share
+        </button>
+        <button
+          onClick={(e) =>
+            window.Kakao.Link.sendScrap({
+              requestUrl: "https://find-your-personality.netlify.app",
+            })
+          }
+        >
+          ShareScrap
+        </button>
+        <a id="create-kakao-link-btn">
+          <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" />
+        </a>
+        <button
+          onClick={(e) => {
+            window.Kakao.Link.sendDefault({
+              objectType: "feed",
+              content: {
+                title: "무의식의 숲 동물 찾기 테스트 by 코끼리",
+                description: "내 무의식에 숨은 동물 두 마리는 무엇?",
+                imageUrl: img,
+                link: {
+                  mobileWebUrl: "https://find-your-personality.netlify.app",
+                },
+              },
+              buttons: [
+                {
+                  title: "테스트 하러 가기",
+                  link: {
+                    mobileWebUrl: "https://find-your-personality.netlify.app",
+                  },
+                },
+              ],
+            });
+          }}
+        >
+          FeedShare
+        </button>
       </Span>
     </Container>
   );
