@@ -7,7 +7,9 @@ import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
 import img from "./img/flowers.jpg";
-import video from "./video/rain1920.mp4";
+import rain from "./video/rain1920.mp4";
+import star from "./video/star1280.mp4";
+
 const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
@@ -15,17 +17,15 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: "Noto Sans KR", sans-serif;
     height: 100%;
-
   }
 
   video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     position: fixed;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -100;
-    top: 0;
+    opacity: ${(props) => props.opacity || "1"};
+    z-index: -1;
   }
 `;
 
@@ -87,6 +87,17 @@ const initialMusic = [
   },
 ];
 
+const videoList = {
+  rain: {
+    src: rain,
+    opacity: 0.55,
+  },
+  star: {
+    src: star,
+    opacity: 1,
+  },
+};
+
 const App = () => {
   const memoriesRef = useRef();
   const tomorrowRef = useRef();
@@ -111,6 +122,7 @@ const App = () => {
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
   const [music, setMusic] = useState(initialMusic);
+  const [video, setVideo] = useState(videoList.star);
 
   const MusicList = Playlist.map((audio, index) => {
     return (
@@ -152,6 +164,10 @@ const App = () => {
     }
   };
 
+  const handleVideo = (title) => {
+    setVideo(videoList[title]);
+  };
+
   const startTest = () => {
     setScore(initialState);
     setIndex(0);
@@ -183,9 +199,9 @@ const App = () => {
 
   return (
     <Container>
-      <GlobalStyle url={img} />
-      <video muted autoPlay loop>
-        <source src={video} type="video/mp4" />
+      <GlobalStyle url={img} opacity={video.opacity} />
+      <video muted autoPlay loop preload="auto" src={video.src}>
+        <source type="video/mp4" />
         <strong>Your browser does not support the video tag</strong>
       </video>
       <Content>
@@ -194,7 +210,7 @@ const App = () => {
         {isPlaying ? "Mute" : "Not playing"}
       </button> */}
         {!start ? (
-          <Landing startTest={startTest} />
+          <Landing startTest={startTest} handleVideo={handleVideo} />
         ) : index === QUESTIONS_LENGTH ? (
           <Result
             calcResult={calcResult}
@@ -202,7 +218,11 @@ const App = () => {
             refreshPage={refreshPage}
           />
         ) : (
-          <Question index={index} handleAnswer={handleAnswer} />
+          <Question
+            index={index}
+            handleAnswer={handleAnswer}
+            handleVideo={handleVideo}
+          />
         )}
       </Content>
       <Span>

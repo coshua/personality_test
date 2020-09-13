@@ -27,12 +27,13 @@ const Button = styled.button`
   }
 `;
 
-const Question = ({ handleAnswer, index }) => {
+const Question = ({ handleAnswer, handleVideo, index }) => {
   return (
     <Container>
       <QuestionContainer>{questionnaire[index].question}</QuestionContainer>
       <Button
         onClick={(e) => {
+          handleVideo("rain");
           handleAnswer(questionnaire[index].response[0].type);
         }}
       >

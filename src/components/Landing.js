@@ -6,13 +6,14 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Landing = ({ startTest }) => {
+const Landing = ({ startTest, handleVideo }) => {
   return (
     <Container>
       당신의 내면에 귀 기울어보세요
       <div className="control">
         <Button
           onClick={(e) => {
+            handleVideo("star");
             startTest();
           }}
         >
