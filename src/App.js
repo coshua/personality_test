@@ -3,7 +3,7 @@ import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
 import Question from "./components/Question";
 import Result from "./components/Result";
-import styled, { createGlobalStyle, keyframes, css } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
 import img from "./img/flowers.jpg";
@@ -51,7 +51,7 @@ const Span = styled.span`
   align-items: center;
 `;
 
-const fadeInOut = (init, end) => keyframes`
+/* const fadeInOut = (init, end) => keyframes`
   0% {
     opacity: ${init}
   }
@@ -59,7 +59,7 @@ const fadeInOut = (init, end) => keyframes`
   100% {
     opacity: ${end}
   }
-`;
+`; */
 
 const QUESTIONS_LENGTH = questionnaire.length;
 
@@ -114,13 +114,13 @@ const App = () => {
   const tomorrowRef = useRef();
   const ukuleleRef = useRef();
 
-  const RefArray = [memoriesRef, tomorrowRef, ukuleleRef];
+  // const RefArray = [memoriesRef, tomorrowRef, ukuleleRef];
 
   useEffect(() => {
     setMusic([
-      { title: "memories", playing: false, src: Playlist[0], ref: RefArray[0] },
-      { title: "tomorrow", playing: false, src: Playlist[1], ref: RefArray[1] },
-      { title: "ukulele", playing: false, src: Playlist[2], ref: RefArray[2] },
+      { title: "memories", playing: false, src: Playlist[0], ref: memoriesRef },
+      { title: "tomorrow", playing: false, src: Playlist[1], ref: tomorrowRef },
+      { title: "ukulele", playing: false, src: Playlist[2], ref: ukuleleRef },
     ]);
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
     console.log(window.Kakao.isInitialized());
@@ -272,33 +272,11 @@ const App = () => {
         >
           ShareScrap
         </button>
-        <a id="create-kakao-link-btn">
-          <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" />
-        </a>
-        <button
-          onClick={(e) => {
-            window.Kakao.Link.sendDefault({
-              objectType: "feed",
-              content: {
-                title: "무의식의 숲 동물 찾기 테스트 by 코끼리",
-                description: "내 무의식에 숨은 동물 두 마리는 무엇?",
-                imageUrl: img,
-                link: {
-                  mobileWebUrl: "https://find-your-personality.netlify.app",
-                },
-              },
-              buttons: [
-                {
-                  title: "테스트 하러 가기",
-                  link: {
-                    mobileWebUrl: "https://find-your-personality.netlify.app",
-                  },
-                },
-              ],
-            });
-          }}
-        >
-          FeedShare
+        <button id="create-kakao-link-btn">
+          <img
+            src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+            alt="share"
+          />
         </button>
       </Span>
     </Container>
