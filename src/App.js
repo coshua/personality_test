@@ -3,7 +3,7 @@ import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
 import Question from "./components/Question";
 import Result from "./components/Result";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes, css } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
 import img from "./img/flowers.jpg";
@@ -24,7 +24,8 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     object-fit: cover;
     position: fixed;
-    opacity: ${(props) => props.opacity || "1"};
+    transition: opacity 2s;
+    opacity: ${(props) => props.opacity || "0"};
     z-index: -1;
   }
 `;
@@ -48,6 +49,16 @@ const Content = styled.div`
 const Span = styled.span`
   margin: 2rem auto;
   align-items: center;
+`;
+
+const fadeInOut = (init, end) => keyframes`
+  0% {
+    opacity: ${init}
+  }
+  
+  100% {
+    opacity: ${end}
+  }
 `;
 
 const QUESTIONS_LENGTH = questionnaire.length;
@@ -165,7 +176,8 @@ const App = () => {
   };
 
   const handleVideo = (title) => {
-    setVideo(videoList[title]);
+    setVideo({ ...video, opacity: "0" });
+    setTimeout(() => setVideo(videoList[title]), 2000);
   };
 
   const startTest = () => {
@@ -206,9 +218,6 @@ const App = () => {
       </video>
       <Content>
         {MusicList}
-        {/* <button onClick={(e) => stop()}>
-        {isPlaying ? "Mute" : "Not playing"}
-      </button> */}
         {!start ? (
           <Landing startTest={startTest} handleVideo={handleVideo} />
         ) : index === QUESTIONS_LENGTH ? (
