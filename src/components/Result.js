@@ -1,11 +1,16 @@
 import React from "react";
 
 const Result = ({ calcResult, refreshPage, startTest }) => {
-  const resultType = calcResult();
+  const TYPE = calcResult();
+
+  const summaryResult = () => {
+    var str = "에너지를 얻는 방향\n";
+    str += TYPE.includes("E") ? "Extraversion" : "Introversion";
+  };
   return (
     <>
       <div className="result-main"></div>
-      {resultType}
+      {TYPE}
       <div className="control"></div>
       <button onClick={(e) => refreshPage()}>처음으로</button>
       <button onClick={(e) => startTest()}>다시하기</button>

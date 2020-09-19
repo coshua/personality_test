@@ -6,9 +6,6 @@ import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import Playlist from "./components/Playlist";
-import img from "./img/flowers.jpg";
-import rain from "./video/rain1920.mp4";
-import star from "./video/star1280.mp4";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -17,6 +14,16 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: "Noto Sans KR", sans-serif;
     height: 100%;
+    background-image: ${(props) =>
+      (props.backgroundImage && `url(${props.backgroundImage})`) ||
+      `url('/images/flowers.jpg')`};
+    background-color: rgba(${(props) =>
+      props.backgroundColor || "255,255,255,0.3"});
+    background-blend-mode: soft-light;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background-color 2.5s;
   }
 
   video {
@@ -25,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
     object-fit: cover;
     position: fixed;
     transition: opacity 2s;
-    opacity: ${(props) => props.opacity || "0"};
+    opacity: ${(props) => props.videoOpacity || "0"};
     z-index: -1;
   }
 `;
@@ -47,19 +54,19 @@ const Content = styled.div`
 `;
 
 const Span = styled.span`
-  margin: 2rem auto;
+  margin: 1rem auto;
   align-items: center;
 `;
 
-/* const fadeInOut = (init, end) => keyframes`
-  0% {
-    opacity: ${init}
+const ShareSpan = styled.span`
+  display: inline-block;
+  margin-top: 5px;
+  height: 69px;
+  top: 5px;
+  & > img {
+    bottom: 0;
   }
-  
-  100% {
-    opacity: ${end}
-  }
-`; */
+`;
 
 const QUESTIONS_LENGTH = questionnaire.length;
 
@@ -100,11 +107,11 @@ const initialMusic = [
 
 const videoList = {
   rain: {
-    src: rain,
+    src: "/videos/rain1920.mp4",
     opacity: 0.55,
   },
   star: {
-    src: star,
+    src: "/videos/star1280.mp4",
     opacity: 1,
   },
 };
@@ -130,11 +137,17 @@ const App = () => {
     });
   }, []);
   const [score, setScore] = useState(initialState);
+  const [answer, setAnswer] = useState(""); //for statistics
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
   const [music, setMusic] = useState(initialMusic);
-  const [video, setVideo] = useState(videoList.star);
+  const [video, setVideo] = useState(null);
+  const [background, setBackground] = useState({
+    backgroundImage: "/images/flowers.jpg",
+    backgroundColor: "255,255,255,0.3",
+  });
 
+  //로딩 걸리나 ? 끊김 없게 만들어
   const MusicList = Playlist.map((audio, index) => {
     return (
       <ReactHowler
@@ -180,16 +193,43 @@ const App = () => {
     setTimeout(() => setVideo(videoList[title]), 2000);
   };
 
-  const startTest = () => {
-    setScore(initialState);
-    setIndex(0);
-    setStart(true);
+  const handleBackground = (v, interval = 2500) => {
+    if (questionnaire[index].response[v].hasOwnProperty("background")) {
+      handleFadeout();
+      setTimeout(
+        () =>
+          setBackground({
+            ...background,
+            ...questionnaire[index].response[v].background,
+          }),
+        interval
+      );
+    }
+  };
+
+  const handleFadeout = () => {
+    var color = background.backgroundColor.split(",");
+    setBackground({
+      ...background,
+      backgroundColor: color[0] + "," + color[1] + "," + color[2] + ",1",
+    });
   };
 
   const refreshPage = () => {
     setScore(initialState);
-    setIndex(0);
+    setAnswer("");
     setStart(false);
+    setBackground({
+      backgroundImage: "/images/flowers.jpg",
+      backgroundColor: "255,255,255,0.5",
+    });
+    setIndex(0);
+    setVideo(null);
+  };
+
+  const startTest = () => {
+    refreshPage();
+    setStart(true);
   };
 
   const handleAnswer = (type) => {
@@ -197,7 +237,7 @@ const App = () => {
       ...score,
       [type]: score[type] + 1,
     });
-    setIndex(index + 1);
+    setAnswer(answer + type);
   };
 
   const calcResult = () => {
@@ -211,11 +251,20 @@ const App = () => {
 
   return (
     <Container>
-      <GlobalStyle url={img} opacity={video.opacity} />
-      <video muted autoPlay loop preload="auto" src={video.src}>
-        <source type="video/mp4" />
-        <strong>Your browser does not support the video tag</strong>
-      </video>
+      <GlobalStyle
+        backgroundImage={background.backgroundImage}
+        backgroundColor={background.backgroundColor}
+        videoOpacity={video !== null ? video.opacity : 1}
+      />
+      {video !== null ? (
+        <video muted autoPlay loop preload="auto" src={video.src}>
+          <source type="video/mp4" />
+          <strong>Your browser does not support the video tag</strong>
+        </video>
+      ) : (
+        <></>
+      )}
+
       <Content>
         {MusicList}
         {!start ? (
@@ -229,8 +278,10 @@ const App = () => {
         ) : (
           <Question
             index={index}
+            setIndex={setIndex}
             handleAnswer={handleAnswer}
             handleVideo={handleVideo}
+            handleBackground={handleBackground}
           />
         )}
       </Content>
@@ -256,28 +307,20 @@ const App = () => {
             window.Kakao.Link.sendCustom({
               templateId: 36312,
               templateArgs: {
-                image_url: img,
+                image_url:
+                  "https://myanimal.kokkiri.kr/assets/img/promotion/img_character14@2x.png",
               },
             })
           }
         >
           Share
         </button>
-        <button
-          onClick={(e) =>
-            window.Kakao.Link.sendScrap({
-              requestUrl: "https://find-your-personality.netlify.app",
-            })
-          }
-        >
-          ShareScrap
-        </button>
-        <button id="create-kakao-link-btn">
+        <ShareSpan id="create-kakao-link-btn">
           <img
             src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
             alt="share"
           />
-        </button>
+        </ShareSpan>
       </Span>
     </Container>
   );
