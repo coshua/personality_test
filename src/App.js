@@ -5,6 +5,7 @@ import Question from "./components/Question";
 import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
+import { getLuminance } from "polished";
 import Playlist from "./components/Playlist";
 
 const GlobalStyle = createGlobalStyle`
@@ -14,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: "Noto Sans KR", sans-serif;
     height: 100%;
+    color: ${(props) =>
+      getLuminance(`rgba(${props.backgroundColor})`) >= getLuminance("#dedede")
+        ? "#000000"
+        : "#dedede"};
     background-image: ${(props) =>
       (props.backgroundImage && `url(${props.backgroundImage})`) ||
       `url('/images/flowers.jpg')`};
@@ -23,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    transition: background-color 2.5s;
+    transition: background-color 2s;
   }
 
   video {
@@ -193,7 +198,7 @@ const App = () => {
     setTimeout(() => setVideo(videoList[title]), 2000);
   };
 
-  const handleBackground = (v, interval = 2500) => {
+  const handleBackground = (v, interval = 2000) => {
     if (questionnaire[index].response[v].hasOwnProperty("background")) {
       handleFadeout();
       setTimeout(

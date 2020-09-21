@@ -1,19 +1,20 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Button from "./Button";
-import ReactAnime from "react-animejs";
-import { spanGenerator } from "../utils/utilFunctions";
-const { Anime, stagger } = ReactAnime;
 
-const textFade = keyframes`
-  0% {
-    opacity: 0;
-  }
+const fadeIn = keyframes`
+0% {
+  opacity: 0
+}
+100% {
+  opacity: 1
+}`;
 
-  100% {
-    opacity: 1;
-  }
+const QuestionSpan = styled.span`
+  opacity: 0;
+  animation: ${fadeIn} 5s ease-in-out ${(props) => props.stagger}ms forwards;
 `;
+
 const Container = styled.div`
   text-align: center;
   span {
@@ -21,20 +22,18 @@ const Container = styled.div`
 `;
 
 const Landing = ({ startTest, handleVideo }) => {
+  const spanGenerator = (string) => {
+    var split = string.split("");
+    return split.map((char, index) => (
+      <QuestionSpan index={index} stagger={index * 100} className="letter">
+        {char}
+      </QuestionSpan>
+    ));
+  };
   return (
     <Container>
-      <Anime
-        initial={[
-          {
-            targets: "#animation .letter",
-            opacity: [0, 1],
-            easing: "easeInOutQuad",
-            delay: stagger(100, { start: 3000 }),
-          },
-        ]}
-      >
-        <h1 id="animation">{spanGenerator("당신의 내면에 귀 기울어보세요")}</h1>
-      </Anime>
+      <h1 id="animation">{spanGenerator("당신의 내면에 귀 기울어보세요")}</h1>
+
       <div className="control">
         <Button
           onClick={(e) => {

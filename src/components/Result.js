@@ -3,10 +3,10 @@ import React from "react";
 const Result = ({ calcResult, refreshPage, startTest }) => {
   const TYPE = calcResult();
 
-  const summaryResult = () => {
+  /*   const summaryResult = () => {
     var str = "에너지를 얻는 방향\n";
     str += TYPE.includes("E") ? "Extraversion" : "Introversion";
-  };
+  }; */
   return (
     <>
       <div className="result-main"></div>
