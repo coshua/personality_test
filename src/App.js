@@ -198,14 +198,24 @@ const App = () => {
     setTimeout(() => setVideo(videoList[title]), 2000);
   };
 
+  const preloadImage = (src) => {
+    let img = new Image();
+    img.src = src;
+    return img;
+  };
+
   const handleBackground = (v, interval = 2000) => {
     if (questionnaire[index].response[v].hasOwnProperty("background")) {
       handleFadeout();
+      let img = preloadImage(
+        questionnaire[index].response[v].background.backgroundImage
+      );
       setTimeout(
         () =>
           setBackground({
-            ...background,
-            ...questionnaire[index].response[v].background,
+            backgroundImage: img.src,
+            backgroundColor:
+              questionnaire[index].response[v].background.backgroundColor,
           }),
         interval
       );
