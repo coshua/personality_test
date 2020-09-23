@@ -6,7 +6,8 @@ import Result from "./components/Result";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import { getLuminance } from "polished";
-import Playlist from "./components/Playlist";
+import { Playlist, initialMusic } from "./components/Playlist";
+import { preloadImage } from "./components/utilFunctions";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -14,13 +15,14 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: "Noto Sans KR", sans-serif;
+    font-size: 100%
     height: 100%;
     color: ${(props) =>
       getLuminance(`rgba(${props.backgroundColor})`) >= getLuminance("#dedede")
         ? "#000000"
         : "#dedede"};
     background-image: ${(props) =>
-      (props.backgroundImage && `url(${props.backgroundImage})`) ||
+      (props.backgroundImage && props.backgroundImage) ||
       `url('/images/flowers.jpg')`};
     background-color: rgba(${(props) =>
       props.backgroundColor || "255,255,255,0.3"});
@@ -39,6 +41,12 @@ const GlobalStyle = createGlobalStyle`
     transition: opacity 2s;
     opacity: ${(props) => props.videoOpacity || "0"};
     z-index: -1;
+  }
+
+  @media only screen and (min-width: 600px) {
+    html {
+      font-size: 125%;
+    }
   }
 `;
 
@@ -86,30 +94,6 @@ const initialState = {
   P: 0,
 };
 
-const initialMusic = [
-  {
-    title: "memories",
-    playing: false,
-    volume: 0.5,
-    src: Playlist[0],
-    ref: null,
-  },
-  {
-    title: "tomorrow",
-    playing: false,
-    volume: 0.5,
-    src: Playlist[1],
-    ref: null,
-  },
-  {
-    title: "ukulele",
-    playing: false,
-    volume: 0.5,
-    src: Playlist[2],
-    ref: null,
-  },
-];
-
 const videoList = {
   rain: {
     src: "/videos/rain1920.mp4",
@@ -125,15 +109,18 @@ const App = () => {
   const memoriesRef = useRef();
   const tomorrowRef = useRef();
   const ukuleleRef = useRef();
-
-  // const RefArray = [memoriesRef, tomorrowRef, ukuleleRef];
+  const rainRef = useRef();
 
   useEffect(() => {
-    setMusic([
-      { title: "memories", playing: false, src: Playlist[0], ref: memoriesRef },
-      { title: "tomorrow", playing: false, src: Playlist[1], ref: tomorrowRef },
-      { title: "ukulele", playing: false, src: Playlist[2], ref: ukuleleRef },
-    ]);
+    const RefArray = [memoriesRef, tomorrowRef, ukuleleRef, rainRef];
+    setMusic(
+      initialMusic.map((audio, index) => {
+        return {
+          ...audio,
+          ref: RefArray[index],
+        };
+      })
+    );
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
     console.log(window.Kakao.isInitialized());
     window.Kakao.Link.createScrapButton({
@@ -148,7 +135,7 @@ const App = () => {
   const [music, setMusic] = useState(initialMusic);
   const [video, setVideo] = useState(null);
   const [background, setBackground] = useState({
-    backgroundImage: "/images/flowers.jpg",
+    backgroundImage: 'url("/images/flowers.jpg")',
     backgroundColor: "255,255,255,0.3",
   });
 
@@ -179,17 +166,19 @@ const App = () => {
     }
   };
 
-  const playMusic = (title = "memories", fade = 3000) => {
+  const playMusic = (title = "memories", fade = 8000) => {
     stopMusic();
     let newMusic = music.map((music) =>
       music.title === title
         ? { ...music, playing: true }
         : { ...music, playing: false }
     );
-    setMusic(newMusic);
     let currentMusic = music.filter((music) => music.title === title);
     if (currentMusic.length >= 1) {
-      currentMusic[0].ref.current.howler.fade(0, 0.5, fade);
+      setTimeout(() => {
+        setMusic(newMusic);
+        currentMusic[0].ref.current.howler.fade(0, 0.5, fade);
+      }, 3000);
     }
   };
 
@@ -198,27 +187,39 @@ const App = () => {
     setTimeout(() => setVideo(videoList[title]), 2000);
   };
 
-  const preloadImage = (src) => {
-    let img = new Image();
-    img.src = src;
-    return img;
-  };
-
   const handleBackground = (v, interval = 2000) => {
     if (questionnaire[index].response[v].hasOwnProperty("background")) {
       handleFadeout();
-      let img = preloadImage(
-        questionnaire[index].response[v].background.backgroundImage
-      );
-      setTimeout(
-        () =>
-          setBackground({
-            backgroundImage: img.src,
-            backgroundColor:
-              questionnaire[index].response[v].background.backgroundColor,
-          }),
-        interval
-      );
+
+      if (
+        questionnaire[index].response[v].background.backgroundImage.startsWith(
+          "linear"
+        )
+      ) {
+        setTimeout(
+          () =>
+            setBackground({
+              backgroundImage:
+                questionnaire[index].response[v].background.backgroundImage,
+              backgroundColor:
+                questionnaire[index].response[v].background.backgroundColor,
+            }),
+          interval
+        );
+      } else {
+        let img = preloadImage(
+          questionnaire[index].response[v].background.backgroundImage
+        );
+        setTimeout(
+          () =>
+            setBackground({
+              backgroundImage: `url("${img.src}")`,
+              backgroundColor:
+                questionnaire[index].response[v].background.backgroundColor,
+            }),
+          interval
+        );
+      }
     }
   };
 
@@ -235,7 +236,7 @@ const App = () => {
     setAnswer("");
     setStart(false);
     setBackground({
-      backgroundImage: "/images/flowers.jpg",
+      backgroundImage: "url('/images/flowers.jpg')",
       backgroundColor: "255,255,255,0.5",
     });
     setIndex(0);
@@ -294,6 +295,7 @@ const App = () => {
           <Question
             index={index}
             setIndex={setIndex}
+            playMusic={playMusic}
             handleAnswer={handleAnswer}
             handleVideo={handleVideo}
             handleBackground={handleBackground}

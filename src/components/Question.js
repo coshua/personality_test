@@ -24,6 +24,10 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 80%;
   text-align: center;
+  img {
+    max-width: 100%;
+    margin: auto;
+  }
 `;
 
 const QuestionContainer = styled.div`
@@ -51,6 +55,8 @@ const QuestionSpan = styled.span`
 `;
 
 const Button = styled.button`
+  font-size: 0.75rem;
+  box-sizing: border-box;
   color: inherit;
   display: inline-block;
   outline: none;
@@ -60,7 +66,6 @@ const Button = styled.button`
   background-color: rgba(0, 0, 0, 0);
   overflow: hidden;
   width: 70%;
-  padding: 1.2rem 1rem;
   font-family: inherit;
   text-align: center;
   cursor: pointer;
@@ -88,6 +93,9 @@ const Button = styled.button`
     border: 1px solid ${darken(0.3, "#FFF")};
     background-color: rgba(0, 0, 0, 0.3);
   }
+  p {
+    margin: 1.2rem 1rem;
+  }
   & + & {
     margin-top: 2rem;
   }
@@ -103,6 +111,7 @@ const Button = styled.button`
 const Question = ({
   handleAnswer,
   handleVideo,
+  playMusic,
   index,
   setIndex,
   handleBackground,
@@ -113,7 +122,7 @@ const Question = ({
     response: ["fadeIn", "fadeIn"],
   });
 
-  const spanGenerator = (string, animate = "fadeInStagger") => {
+  const spanGenerator = (string) => {
     var split = string.split("");
     return split.map((char, index) => (
       <QuestionSpan
@@ -126,6 +135,19 @@ const Question = ({
       </QuestionSpan>
     ));
   };
+
+  const renderResponse = (v) => {
+    if (variation !== -1) {
+      return (
+        <p>{questionnaire[index].response[variation].subresponse[v].answer}</p>
+      );
+    } else if (questionnaire[index].response[v].hasOwnProperty("answerImage")) {
+      return (
+        <img src={questionnaire[index].response[v].answerImage} alt="desk" />
+      );
+    } else return <p>{questionnaire[index].response[v].answer}</p>;
+  };
+
   const handleClick = (v) => {
     if (variation === -1) {
       handleAnswer(questionnaire[index].response[v].type);
@@ -162,6 +184,8 @@ const Question = ({
             : questionnaire[index].response[variation].subquestion.length * 100
         }
         onClick={(e) => {
+          if (questionnaire[index].response[0].hasOwnProperty("music"))
+            playMusic(questionnaire[index].response[0].music);
           handleBackground(0);
           setAnimation({
             question: "fadeOut",
@@ -170,9 +194,7 @@ const Question = ({
           setTimeout(() => handleClick(0), 2000);
         }}
       >
-        {variation === -1
-          ? questionnaire[index].response[0].answer
-          : questionnaire[index].response[variation].subresponse[0].answer}
+        {renderResponse(0)}
       </Button>
 
       <Button
@@ -191,9 +213,7 @@ const Question = ({
           setTimeout(() => handleClick(1), 2000);
         }}
       >
-        {variation === -1
-          ? questionnaire[index].response[1].answer
-          : questionnaire[index].response[variation].subresponse[1].answer}
+        {renderResponse(1)}
       </Button>
     </Container>
   );

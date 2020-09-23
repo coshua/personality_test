@@ -1,11 +1,16 @@
-import memories from "../audios/memories.mp3";
-import tomorrow from "../audios/tomorrow.mp3";
-import ukulele from "../audios/ukulele.mp3";
-
-const Playlist = [
-  { title: "memories", src: memories },
-  { title: "tomorrow", src: tomorrow },
-  { title: "ukulele", src: ukulele },
+export const Playlist = [
+  { title: "memories", src: "/audios/memories.mp3" },
+  { title: "tomorrow", src: "/audios/tomorrow.mp3" },
+  { title: "ukulele", src: "/audios/ukulele.mp3" },
+  { title: "rain_thunder", src: "/audios/rain_thunder.mp3" },
 ];
 
-export default Playlist;
+export const initialMusic = Playlist.map((audio) => {
+  return {
+    title: audio.title,
+    playing: false,
+    volume: 0.3,
+    src: audio.src,
+    ref: null,
+  };
+});

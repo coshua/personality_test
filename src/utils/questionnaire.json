@@ -1,5 +1,62 @@
 [
   {
+    "question": "좋아하는 친구와 여행 계획을 세우고 있다. 장소는 어디가 좋을까?",
+    "response": [
+      {
+        "type": "E",
+        "answer": "북적북적 문화의 메카 도심지. 다양한 문화와 새로운 사람들은 언제나 흥미롭다.",
+        "background": {
+          "backgroundImage": "/images/urban.jpg",
+          "backgroundColor": "0,0,0,0.5"
+        },
+        "music": "ukulele"
+      },
+      {
+        "type": "I",
+        "answer": "여유롭고 고즈넉한 자연. 별로 뒤덮인 밤하늘을 볼 수 있다면 더 바랄 것이 없다.",
+        "background": {
+          "backgroundImage": "/images/starry_night.jpg",
+          "backgroundColor": "0,0,0,0.5"
+        }
+      }
+    ]
+  },
+  {
+    "question": "사람을 만나면",
+    "response": [
+      {
+        "type": "E",
+        "answer": "대체로 에너지를 얻는다",
+        "background": {
+          "backgroundImage": "linear-gradient(315deg, #ffa69e 0%, #5d4954 74%)",
+          "backgroundColor": "0,0,0,0.5"
+        },
+        "music": "rain_thunder"
+      },
+      {
+        "type": "I",
+        "answer": "모아둔 에너지를 사용한다",
+        "background": {
+          "backgroundImage": "/images/starry_night.jpg",
+          "backgroundColor": "0,0,0,0.5"
+        }
+      }
+    ]
+  },
+  {
+    "question": "내 책상의 모습은?",
+    "response": [
+      {
+        "type": "P",
+        "answerImage": "/images/neat_desk.jpg"
+      },
+      {
+        "type": "J",
+        "answerImage": "/images/messy_desk.jpg"
+      }
+    ]
+  },
+  {
     "question": "친구와 점심 약속이 있다. 이때 나는",
     "response": [
       {
@@ -35,39 +92,32 @@
     ]
   },
   {
-    "question": "좋아하는 식당에서 친구와 그동안 쌓인 근황을 나눈다. 친구의 고민이다.",
+    "question": "밥은 어디에서 먹을까?",
     "response": [
       {
-        "type": "T",
-        "answer": "싸웠어? 뭐라했는데 걔가?."
+        "type": "P",
+        "answer": "그 날 먹고 싶은 것을 적당한 곳에서 먹는다."
       },
       {
-        "type": "F",
-        "answer": "ㅠㅠ."
+        "type": "J",
+        "answer": "약속 장소 부근에 평이 괜찮고 유명한 맛집 후보들을 미리 찾아놨다."
       }
     ]
   },
   {
-    "question": "좋아하는 친구와 여행 계획을 세우고 있다. 장소는 어디가 좋을까?",
+    "question": "식당에 들어서니 빈자리가 몇개 없다.",
     "response": [
       {
-        "type": "E",
-        "answer": "북적북적 문화의 메카 도심지. 다양한 문화와 새로운 사람들은 언제나 흥미롭다.",
-        "background": {
-          "backgroundImage": "/images/urban.jpg",
-          "backgroundColor": "0,0,0,0.5"
-        }
+        "type": "I",
+        "answer": "친구의 이야기에 집중할 수 있는 조용하고 외딴 자리."
       },
       {
-        "type": "I",
-        "answer": "여유롭고 고즈넉한 자연. 별로 뒤덮인 밤하늘을 볼 수 있다면 더 바랄 것이 없다.",
-        "background": {
-          "backgroundImage": "/images/starry_night.jpg",
-          "backgroundColor": "0,0,0,0.5"
-        }
+        "type": "E",
+        "answer": "친구와 웃고 떠들어도 눈치 보이지 않을 정도로 적당한 소음이 있는 자리."
       }
     ]
   },
+
   {
     "question": "설레는 마음에 계획을 먼저 세워보려고 한다.",
     "response": [
@@ -79,13 +129,6 @@
         "type": "J",
         "answer": "숙소에서 잔다면 체크아웃 시간까지 생각하여 일정을 짠다."
       }
-    ]
-  },
-  {
-    "question": "사람을 만나면",
-    "response": [
-      { "type": "E", "answer": "대체로 에너지를 얻는다" },
-      { "type": "I", "answer": "모아둔 에너지를 사용한다" }
     ]
   },
   {
