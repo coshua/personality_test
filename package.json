@@ -7,6 +7,7 @@
     "yarn": "1.22.0"
   },
   "scripts": {
+    "start_windows": "set NODE_ENV=production&&node index.js",
     "start": "node server.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd client && yarn install && yarn build",
     "client": "cd client && yarn start",
@@ -16,7 +17,6 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "client": "file:client",
     "http-proxy-middleware": "^1.0.5",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4"
