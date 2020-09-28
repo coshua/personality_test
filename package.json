@@ -1,6 +1,10 @@
 {
-  "name": "management",
+  "name": "mbti-test",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.19.0",
+    "yarn": "1.22.0"
+  },
   "scripts": {
     "heroku-postbuild": "cd client && yarn install && yarn build",
     "client": "cd client && yarn start",
