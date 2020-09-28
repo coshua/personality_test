@@ -1,39 +1,20 @@
 {
-  "name": "mbti_test",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "howler": "^2.2.0",
-    "polished": "^3.6.6",
-    "react": "^16.13.1",
-    "react-animejs": "^0.5.4",
-    "react-dom": "^16.13.1",
-    "react-howler": "^3.8.0",
-    "react-scripts": "3.4.3",
-    "styled-components": "^5.2.0"
-  },
+  "name": "management",
+  "version": "1.0.0",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "heroku-postbuild": "cd client && yarn install && yarn build",
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^1.0.5",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.4"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "concurrently": "^4.0.1"
   }
 }
