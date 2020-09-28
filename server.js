@@ -1,22 +1,21 @@
 const express = require("express");
-const fs = require("fs");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
 const path = require("path");
+const dotenv = require("dotenv");
 const port = process.env.PORT || 5000;
+
+dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const data = fs.readFileSync("./database.json");
-const conf = JSON.parse(data);
-
 const db = mysql.createConnection({
-  host: conf.host,
-  user: conf.user,
-  password: conf.password,
-  port: conf.port,
-  database: conf.database,
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  port: process.env.port,
+  database: process.env.database,
 });
 db.connect();
 
