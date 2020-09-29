@@ -286,6 +286,7 @@ const App = () => {
           <Landing startTest={startTest} handleVideo={handleVideo} />
         ) : index === QUESTIONS_LENGTH ? (
           <Result
+            answer={answer}
             calcResult={calcResult}
             startTest={startTest}
             refreshPage={refreshPage}
@@ -338,7 +339,7 @@ const App = () => {
           />
         </ShareSpan>
       </Span>
-      <a href="/api/result">Result</a>'
+      <a href="/api/result">Result</a>
     </Container>
   );
 };

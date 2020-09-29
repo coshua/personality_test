@@ -126,6 +126,7 @@ const Question = ({
     var split = string.split("");
     return split.map((char, index) => (
       <QuestionSpan
+        key={index}
         animate={animation.question}
         index={index}
         stagger={index * 100}

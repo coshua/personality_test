@@ -25,7 +25,12 @@ const Landing = ({ startTest, handleVideo }) => {
   const spanGenerator = (string) => {
     var split = string.split("");
     return split.map((char, index) => (
-      <QuestionSpan index={index} stagger={index * 100} className="letter">
+      <QuestionSpan
+        key={index}
+        index={index}
+        stagger={index * 100}
+        className="letter"
+      >
         {char}
       </QuestionSpan>
     ));

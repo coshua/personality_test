@@ -29,6 +29,22 @@ app.get("/api/result", (req, res) => {
   });
 });
 
+app.post("/api/result", (req, res) => {
+  try {
+    db.query(
+      "INSERT INTO result(response, category, created) VALUES(?,?,DEFAULT)",
+      [req.body.response, req.body.category],
+      (err, results) => {
+        if (err) throw err;
+        res.end();
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });

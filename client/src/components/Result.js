@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
-const Result = ({ calcResult, refreshPage, startTest }) => {
+const Result = ({ answer, calcResult, refreshPage, startTest }) => {
   const TYPE = calcResult();
+
+  const sendData = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const data = {
+      response: answer,
+      category: TYPE,
+    };
+    return axios.post("/api/result", data, config);
+  };
+
+  useEffect(() => {
+    sendData();
+  }, []);
 
   /*   const summaryResult = () => {
     var str = "에너지를 얻는 방향\n";
