@@ -122,7 +122,6 @@ const App = () => {
       })
     );
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
-    console.log(window.Kakao.isInitialized());
     window.Kakao.Link.createScrapButton({
       container: "#create-kakao-link-btn",
       requestUrl: "https://find-your-personality.netlify.app",
