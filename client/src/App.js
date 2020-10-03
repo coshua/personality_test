@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
 import Question from "./components/Question";
 import Result from "./components/Result";
+import Statistics from "./components/Statistics";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
 import { getLuminance } from "polished";
@@ -279,66 +281,79 @@ const App = () => {
       ) : (
         <></>
       )}
-      <Content>
-        {MusicList}
-        {!start ? (
-          <Landing startTest={startTest} handleVideo={handleVideo} />
-        ) : index === QUESTIONS_LENGTH ? (
-          <Result
-            answer={answer}
-            calcResult={calcResult}
-            startTest={startTest}
-            refreshPage={refreshPage}
+      <Router>
+        <Switch>
+          <Route path="/statistics" component={Statistics} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <>
+                <Content>
+                  {MusicList}
+                  {!start ? (
+                    <Landing startTest={startTest} handleVideo={handleVideo} />
+                  ) : index === QUESTIONS_LENGTH ? (
+                    <Result
+                      answer={answer}
+                      calcResult={calcResult}
+                      startTest={startTest}
+                      refreshPage={refreshPage}
+                    />
+                  ) : (
+                    <Question
+                      index={index}
+                      setIndex={setIndex}
+                      playMusic={playMusic}
+                      handleAnswer={handleAnswer}
+                      handleVideo={handleVideo}
+                      handleBackground={handleBackground}
+                    />
+                  )}
+                </Content>
+                <Span>
+                  <i
+                    className="fas fa-volume-mute fa-lg"
+                    onClick={(e) => pauseMusic()}
+                  ></i>
+                  <i
+                    className="fas fa-volume-mute fa-lg"
+                    onClick={(e) => stopMusic()}
+                  ></i>
+                  <i
+                    className="fas fa-headphones fa-lg"
+                    onClick={(e) => playMusic("ukulele")}
+                  ></i>
+                  <i
+                    className="fas fa-headphones fa-lg"
+                    onClick={(e) => playMusic("tomorrow")}
+                  ></i>
+                  <button
+                    onClick={(e) =>
+                      window.Kakao.Link.sendCustom({
+                        templateId: 36312,
+                        templateArgs: {
+                          image_url:
+                            "https://myanimal.kokkiri.kr/assets/img/promotion/img_character14@2x.png",
+                        },
+                      })
+                    }
+                  >
+                    Share
+                  </button>
+                  <ShareSpan id="create-kakao-link-btn">
+                    <img
+                      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+                      alt="share"
+                    />
+                  </ShareSpan>
+                  <Link to="/statistics">stat</Link>
+                </Span>
+              </>
+            )}
           />
-        ) : (
-          <Question
-            index={index}
-            setIndex={setIndex}
-            playMusic={playMusic}
-            handleAnswer={handleAnswer}
-            handleVideo={handleVideo}
-            handleBackground={handleBackground}
-          />
-        )}
-      </Content>
-      <Span>
-        <i
-          className="fas fa-volume-mute fa-lg"
-          onClick={(e) => pauseMusic()}
-        ></i>
-        <i
-          className="fas fa-volume-mute fa-lg"
-          onClick={(e) => stopMusic()}
-        ></i>
-        <i
-          className="fas fa-headphones fa-lg"
-          onClick={(e) => playMusic("ukulele")}
-        ></i>
-        <i
-          className="fas fa-headphones fa-lg"
-          onClick={(e) => playMusic("tomorrow")}
-        ></i>
-        <button
-          onClick={(e) =>
-            window.Kakao.Link.sendCustom({
-              templateId: 36312,
-              templateArgs: {
-                image_url:
-                  "https://myanimal.kokkiri.kr/assets/img/promotion/img_character14@2x.png",
-              },
-            })
-          }
-        >
-          Share
-        </button>
-        <ShareSpan id="create-kakao-link-btn">
-          <img
-            src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-            alt="share"
-          />
-        </ShareSpan>
-      </Span>
-      <a href="/api/result">Result</a>
+        </Switch>
+      </Router>
     </Container>
   );
 };
