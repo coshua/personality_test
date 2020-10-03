@@ -23,8 +23,24 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
 }
 
+var queryStat = `SELECT SUM(CASE WHEN category = "ISTJ" THEN 1 ELSE 0 END) AS "ISTJ",
+SUM(CASE WHEN category = "ISTP" THEN 1 ELSE 0 END) AS "ISTP",
+SUM(CASE WHEN category = "ISFJ" THEN 1 ELSE 0 END) AS "ISFJ",
+SUM(CASE WHEN category = "ISFP" THEN 1 ELSE 0 END) AS "ISFP",
+SUM(CASE WHEN category = "INFJ" THEN 1 ELSE 0 END) AS "INFJ",
+SUM(CASE WHEN category = "INFP" THEN 1 ELSE 0 END) AS "INFP",
+SUM(CASE WHEN category = "INTJ" THEN 1 ELSE 0 END) AS "INTJ",
+SUM(CASE WHEN category = "INTP" THEN 1 ELSE 0 END) AS "INTP",
+SUM(CASE WHEN category = "ESTP" THEN 1 ELSE 0 END) AS "ESTP",
+SUM(CASE WHEN category = "ESTJ" THEN 1 ELSE 0 END) AS "ESTJ",
+SUM(CASE WHEN category = "ESFP" THEN 1 ELSE 0 END) AS "ESFP",
+SUM(CASE WHEN category = "ESFJ" THEN 1 ELSE 0 END) AS "ESFJ",
+SUM(CASE WHEN category = "ENFP" THEN 1 ELSE 0 END) AS "ENFP",
+SUM(CASE WHEN category = "ENFJ" THEN 1 ELSE 0 END) AS "ENFJ",
+SUM(CASE WHEN category = "ENTP" THEN 1 ELSE 0 END) AS "ENTP",
+SUM(CASE WHEN category = "ENTJ" THEN 1 ELSE 0 END) AS "ENTJ" FROM result`;
 app.get("/api/result", (req, res) => {
-  db.query("SELECT * FROM result", (err, results) => {
+  db.query(queryStat, (err, results) => {
     res.send(results);
   });
 });
