@@ -4,22 +4,38 @@
     "response": [
       {
         "type": "E",
-        "answer": "북적북적 문화의 메카 도심지. 다양한 문화와 새로운 사람들은 언제나 흥미롭다.",
-        "background": {
+        "answer": "북적북적 문화의 메카 도심지. 다양한 문화와 새로운 사람들은 언제나 흥미롭다",
+        "reservedBackground": {
           "backgroundImage": "/images/urban.jpg",
           "backgroundColor": "0,0,0,0.5"
         },
-        "music": "ukulele"
+        "reservedMusic": "ukulele"
       },
       {
         "type": "I",
-        "answer": "여유롭고 고즈넉한 자연. 별로 뒤덮인 밤하늘을 볼 수 있다면 더 바랄 것이 없다.",
-        "background": {
+        "answer": "여유롭고 고즈넉한 자연. 별로 뒤덮인 밤하늘을 볼 수 있다면 더 바랄 것이 없다",
+        "reservedBackground": {
           "backgroundImage": "/images/starry_night.jpg",
           "backgroundColor": "0,0,0,0.5"
-        }
+        },
+        "reservedMmusic": "nature"
       }
     ]
+  },
+  {
+    "question": "설레는 마음에 계획을 먼저 세워보려고 한다.",
+    "response": [
+      {
+        "type": "P",
+        "answer": "가볼만한 곳을 간단하게 검색해서 대략적인 동선과 잘 곳을 생각한다."
+      },
+      {
+        "type": "J",
+        "answer": "숙소에서 잔다면 체크아웃 시간까지 생각하여 일정을 짠다."
+      }
+    ],
+    "video": "rain",
+    "delay": "5000"
   },
   {
     "question": "사람을 만나면",
@@ -48,11 +64,46 @@
     "response": [
       {
         "type": "J",
-        "answerImage": "/images/neat_desk.jpg"
+        "answerImage": "/images/neat_desk.jpg",
+        "background": {
+          "backgroundImage": "/images/neat_desk.jpg",
+          "backgroundColor": "0,0,0,0.5"
+        }
       },
       {
         "type": "P",
-        "answerImage": "/images/messy_desk.jpg"
+        "answerImage": "/images/messy_desk.jpg",
+        "background": {
+          "backgroundImage": "/images/messy_desk.jpg",
+          "backgroundColor": "0,0,0,0.5"
+        }
+      }
+    ]
+  },
+  {
+    "question": "노트북을 켰더니 새 과제가 수업 공지사항에 올라왔다.",
+    "response": [
+      {
+        "type": "J",
+        "answer": "계획대로 정확히 진행되지 못하는 일이 생기더라도 계획이 있어야 마음이 편하다."
+      },
+      {
+        "type": "P",
+        "answer": "제출기한이 가까워져야 더 탄력을 받고 뭘 해야할지 선명하게 보인다. 미래의 나를 믿는다."
+      }
+    ],
+    "useReserve": "true"
+  },
+  {
+    "question": "온라인 조모임 회의가 있다. 일을 진행하는 데 있어서 나는",
+    "response": [
+      {
+        "type": "S",
+        "answer": "우선 해야할 일이 무엇인지 명확하게 안다."
+      },
+      {
+        "type": "N",
+        "answer": "과정과 목표를 구상하느라 실행력이 낮다."
       }
     ]
   },
@@ -81,7 +132,7 @@
         "subresponse": [
           {
             "type": "F",
-            "answer": "미안해... 진짜 미안 ㅠㅠ 오래 기다렸지.. 내가 무조건 밥살게 미안해 ㅠㅠ"
+            "answer": "미안해... 진짜 미안 ㅠㅠ 오래 기다리느라 심심했지ㅠㅠ"
           },
           {
             "type": "T",
@@ -90,5 +141,85 @@
         ]
       }
     ]
+  },
+  {
+    "question": "밥은 어디에서 먹을까?",
+    "response": [
+      {
+        "type": "P",
+        "answer": "그 날 먹고 싶은 것을 적당한 곳에서 먹는다."
+      },
+      {
+        "type": "J",
+        "answer": "약속 장소 부근에 평이 괜찮고 유명한 맛집 후보들을 미리 찾아놨다."
+      }
+    ]
+  },
+  {
+    "question": "식당에 들어서니 빈자리가 몇개 없다.",
+    "response": [
+      {
+        "type": "I",
+        "answer": "친구의 이야기에 집중할 수 있는 조용하고 외딴 자리"
+      },
+      {
+        "type": "E",
+        "answer": "친구와 웃고 떠들어도 눈치 보이지 않을 정도로 적당한 소음이 있는 자리"
+      }
+    ]
+  },
+  {
+    "question": "친구와 자기 얘기를 하는 중에 나는",
+    "response": [
+      {
+        "type": "S",
+        "answer": "눈 앞의 친구의 이야기에 쉽게 집중할 수 있다."
+      },
+      {
+        "type": "N",
+        "answer": "친구의 말에서 영감을 받아 다른 생각을 할 때가 많다."
+      }
+    ]
+  },
+  {
+    "question": "친구가 자기 친구와 싸운 얘기를 해준다.",
+    "response": [
+      {
+        "type": "F",
+        "answer": "친구의 억울한 일은 곧 나의 억울한 일. 친구의 기분을 자연스럽게 풀어주는 법을 안다."
+      },
+      {
+        "type": "T",
+        "answer": "일이 어떻게 해서 그런 식으로 흘러갔는지 호기심이 생긴다. 일의 인과관계를 궁금해하는 것은 내가 친구에게 관심을 기울인다는 뜻이다."
+      }
+    ]
+  },
+  {
+    "question": "내일은 모처럼의 휴일이다.",
+    "response": [
+      {
+        "type": "E",
+        "answer": "평소 시간이 안 맞아 만나기 어려웠던 친구에게 연락하여 약속을 잡는다"
+      },
+      {
+        "type": "I",
+        "answer": "집에서 혼자 하고 싶었던 것들을 하며 방해받지 않는 시간을 보낸다"
+      }
+    ]
+  },
+  {
+    "question": "자기전에 생각 없다.",
+    "response": [
+      {
+        "type": "N",
+        "answer": "현실의 일과 관련 없는 잡생각이 꼬리에 꼬리를 물고 따라다닌다."
+      },
+      {
+        "type": "S",
+        "answer": "비현실적인 생각들은 뜬구름 잡는 이야기같다."
+      }
+    ],
+    "video": "rain",
+    "delay": "4000"
   }
 ]

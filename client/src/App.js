@@ -128,6 +128,7 @@ const App = () => {
       container: "#create-kakao-link-btn",
       requestUrl: "https://find-your-personality.netlify.app",
     });
+    console.log(window.Kakao.isInitialized());
   }, []);
   const [score, setScore] = useState(initialState);
   const [answer, setAnswer] = useState(""); //for statistics
@@ -139,6 +140,7 @@ const App = () => {
     backgroundImage: 'url("/images/flowers.jpg")',
     backgroundColor: "255,255,255,0.3",
   });
+  const [reserve, setReserve] = useState({});
 
   //로딩 걸리나 ? 끊김 없게 만들어
   const MusicList = Playlist.map((audio, index) => {
@@ -183,14 +185,52 @@ const App = () => {
     }
   };
 
-  const handleVideo = (title) => {
+  const handleVideo = (title, delay = 2000) => {
     setVideo({ ...video, opacity: "0" });
-    setTimeout(() => setVideo(videoList[title]), 2000);
+    setTimeout(
+      () => setVideo({ src: videoList[title].src, opacity: "0" }),
+      2000
+    );
+    setTimeout(
+      () => setVideo({ ...video, opacity: videoList[title].opacity }),
+      delay
+    );
+  };
+
+  const handleMusic = (v, interval = 2000) => {
+    if (questionnaire[index].response[v].hasOwnProperty("music"))
+      playMusic(questionnaire[index].response[v].music);
+    if (questionnaire[index].hasOwnProperty("useReserve")) {
+      playMusic(reserve.music);
+    }
   };
 
   const handleBackground = (v, interval = 2000) => {
+    if (questionnaire[index].response[v].hasOwnProperty("reservedBackground")) {
+      setReserve({
+        background: questionnaire[index].response[v].reservedBackground,
+        music: questionnaire[index].response[v].reservedMusic,
+      });
+    }
+    if (questionnaire[index].hasOwnProperty("useReserve")) {
+      handleFadeout();
+      let img = preloadImage(reserve.background.backgroundImage);
+      setTimeout(
+        () =>
+          setBackground({
+            backgroundImage: `url("${img.src}")`,
+            backgroundColor: reserve.background.backgroundColor,
+          }),
+        interval
+      );
+    }
+    if (questionnaire[index].hasOwnProperty("video")) {
+      handleFadeout();
+      handleVideo(questionnaire[index].video, questionnaire[index].delay);
+    }
     if (questionnaire[index].response[v].hasOwnProperty("background")) {
       handleFadeout();
+      setVideo({ ...video, opacity: "0" });
 
       if (
         questionnaire[index].response[v].background.backgroundImage.startsWith(
@@ -306,8 +346,8 @@ const App = () => {
                       setIndex={setIndex}
                       playMusic={playMusic}
                       handleAnswer={handleAnswer}
-                      handleVideo={handleVideo}
                       handleBackground={handleBackground}
+                      handleMusic={handleMusic}
                     />
                   )}
                 </Content>

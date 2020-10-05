@@ -110,11 +110,11 @@ const Button = styled.button`
 
 const Question = ({
   handleAnswer,
-  handleVideo,
   playMusic,
   index,
   setIndex,
   handleBackground,
+  handleMusic,
 }) => {
   const [variation, setVariation] = useState(-1); //0 question for P,1 requires question for J
   const [animation, setAnimation] = useState({
@@ -185,14 +185,13 @@ const Question = ({
             : questionnaire[index].response[variation].subquestion.length * 100
         }
         onClick={(e) => {
-          if (questionnaire[index].response[0].hasOwnProperty("music"))
-            playMusic(questionnaire[index].response[0].music);
+          handleMusic(0);
           handleBackground(0);
           setAnimation({
             question: "fadeOut",
             response: ["fadeOutDelay", "fadeOut"],
           });
-          setTimeout(() => handleClick(0), 2000);
+          setTimeout(() => handleClick(0), questionnaire[index].delay || 2000);
         }}
       >
         {renderResponse(0)}
@@ -206,12 +205,13 @@ const Question = ({
             : questionnaire[index].response[variation].subquestion.length * 100
         }
         onClick={(e) => {
+          handleMusic(1);
           handleBackground(1);
           setAnimation({
             question: "fadeOut",
             response: ["fadeOut", "fadeOutDelay"],
           });
-          setTimeout(() => handleClick(1), 2000);
+          setTimeout(() => handleClick(1), questionnaire[index].delay || 2000);
         }}
       >
         {renderResponse(1)}
