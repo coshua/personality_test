@@ -7,7 +7,12 @@ const Statistics = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get("/api/result");
+        const res = await axios.get(
+          "https://find-your-personality.herokuapp.com/api/result",
+          {
+            withCredentials: true,
+          }
+        );
         if (res.data.length > 0) {
           const labels = [];
           const acc = [];

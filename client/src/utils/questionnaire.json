@@ -66,7 +66,7 @@
         "type": "J",
         "answerImage": "/images/neat_desk.jpg",
         "background": {
-          "backgroundImage": "/images/neat_desk.jpg",
+          "backgroundImage": "/images/neat_work.jpg",
           "backgroundColor": "0,0,0,0.5"
         }
       },
@@ -74,7 +74,7 @@
         "type": "P",
         "answerImage": "/images/messy_desk.jpg",
         "background": {
-          "backgroundImage": "/images/messy_desk.jpg",
+          "backgroundImage": "/images/messy_work.jpg",
           "backgroundColor": "0,0,0,0.5"
         }
       }
@@ -91,8 +91,7 @@
         "type": "P",
         "answer": "제출기한이 가까워져야 더 탄력을 받고 뭘 해야할지 선명하게 보인다. 미래의 나를 믿는다."
       }
-    ],
-    "useReserve": "true"
+    ]
   },
   {
     "question": "온라인 조모임 회의가 있다. 일을 진행하는 데 있어서 나는",
@@ -205,7 +204,8 @@
         "type": "I",
         "answer": "집에서 혼자 하고 싶었던 것들을 하며 방해받지 않는 시간을 보낸다"
       }
-    ]
+    ],
+    "useReserve": "true"
   },
   {
     "question": "자기전에 생각 없다.",
