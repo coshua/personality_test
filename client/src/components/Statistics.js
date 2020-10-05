@@ -8,10 +8,7 @@ const Statistics = () => {
     try {
       (async () => {
         const res = await axios.get(
-          "https://find-your-personality.herokuapp.com/api/result",
-          {
-            withCredentials: true,
-          }
+          "https://find-your-personality.herokuapp.com/api/result"
         );
         if (res.data.length > 0) {
           const labels = [];
