@@ -1,28 +1,43 @@
 {
-  "name": "mbti-test",
-  "version": "1.0.0",
-  "main": "index.js",
-  "engines": {
-    "node": "10.19.0",
-    "yarn": "1.22.0"
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "aws-sdk": "^2.766.0",
+    "axios": "^0.20.0",
+    "chart.js": "^2.9.3",
+    "howler": "^2.2.0",
+    "polished": "^3.6.6",
+    "react": "^16.13.1",
+    "react-chartjs-2": "^2.10.0",
+    "react-dom": "^16.13.1",
+    "react-howler": "^3.8.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "styled-components": "^5.2.0"
   },
   "scripts": {
-    "start_windows": "set NODE_ENV=production&&node index.js",
-    "start": "node server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd client && yarn install && yarn build",
-    "client": "cd client && yarn start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "dotenv": "^8.2.0",
-    "express": "^4.16.4",
-    "http-proxy-middleware": "^1.0.5",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "devDependencies": {
-    "concurrently": "^4.0.1"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
