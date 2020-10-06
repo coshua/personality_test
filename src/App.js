@@ -124,10 +124,6 @@ const App = () => {
       })
     );
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
-    window.Kakao.Link.createScrapButton({
-      container: "#create-kakao-link-btn",
-      requestUrl: "https://find-your-personality.netlify.app",
-    });
     console.log(window.Kakao.isInitialized());
   }, []);
   const [score, setScore] = useState(initialState);
@@ -385,6 +381,15 @@ const App = () => {
                     <img
                       src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
                       alt="share"
+                      onClick={(e) =>
+                        window.Kakao.Link.sendCustom({
+                          templateId: 36312,
+                          templateArgs: {
+                            image_url:
+                              "https://myanimal.kokkiri.kr/assets/img/promotion/img_character14@2x.png",
+                          },
+                        })
+                      }
                     />
                   </ShareSpan>
                   <Link to="/statistics">stat</Link>

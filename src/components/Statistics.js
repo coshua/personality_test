@@ -7,7 +7,7 @@ const Statistics = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get("/api/result");
+        const res = await axios.get("http://3.35.169.41:5000/api/result");
         if (res.data.length > 0) {
           const labels = [];
           const acc = [];
