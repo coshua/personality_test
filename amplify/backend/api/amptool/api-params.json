@@ -1,0 +1,38 @@
+{
+    "paths": [
+        {
+            "name": "/items",
+            "lambdaFunction": "amptoolfunction",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/items"
+        }
+    ],
+    "resourceName": "amptool",
+    "apiName": "amptool",
+    "functionArns": [
+        {
+            "lambdaFunction": "amptoolfunction"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-mbtitest-dev-104249-authRole",
+        "unAuthRoleName": "amplify-mbtitest-dev-104249-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "amptoolfunction",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

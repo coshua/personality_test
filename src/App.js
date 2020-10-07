@@ -10,6 +10,10 @@ import ReactHowler from "react-howler";
 import { getLuminance } from "polished";
 import { Playlist, initialMusic } from "./components/Playlist";
 import { preloadImage } from "./components/utilFunctions";
+import Amplify from "aws-amplify";
+import aws_exports from "./aws-exports";
+
+Amplify.configure(aws_exports);
 
 const GlobalStyle = createGlobalStyle`
   html {

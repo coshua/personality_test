@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import { API } from "aws-amplify";
 
 const Result = ({ answer, calcResult, refreshPage, startTest }) => {
   const TYPE = calcResult();
 
   useEffect(() => {
-    const config = {
+    /*     const config = {
       headers: {
         "Content-Type": "application/json",
       },
@@ -14,8 +15,18 @@ const Result = ({ answer, calcResult, refreshPage, startTest }) => {
     const data = {
       response: answer,
       category: TYPE,
+    }; */
+
+    const req = {
+      body: {
+        response: answer,
+        category: TYPE,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
-    return axios.post("/api/result", data, config);
+    return API.post("amptool", "/items/result", req);
   }, [TYPE, answer]);
 
   /*   const summaryResult = () => {
