@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
-import { API } from "aws-amplify";
-
+import Amplify, { API } from "aws-amplify";
+import aws_exports from "../aws-exports";
+Amplify.configure(aws_exports);
 const Statistics = () => {
   const [stat, setStat] = useState({});
   useEffect(() => {
     try {
       (async () => {
+        const res1 = await axios.get("http://3.35.169.41:5000/api/result");
+        if (res1.data.length > 0) console.log("res1 connected");
         const res = await API.get("amptool", "/items/result");
         if (res.data.length > 0) {
           const labels = [];

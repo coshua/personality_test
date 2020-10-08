@@ -10,19 +10,9 @@ var mysql = require("mysql");
 var cors = require("cors");
 // declare a new express app
 var app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
-app.use(cors());
-
-// Enable CORS for all methods
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 const db = mysql.createConnection({
   host: "personality.cm18unzrhz2y.us-east-2.rds.amazonaws.com",
   user: "admin",
@@ -31,6 +21,14 @@ const db = mysql.createConnection({
   database: "personality",
 });
 db.connect();
+// Enable CORS for all methods
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Method", "*");
+  next();
+});
+
 /**********************
  * Example get method *
  **********************/

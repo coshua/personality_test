@@ -4,12 +4,21 @@
             "name": "/items",
             "lambdaFunction": "amptoolfunction",
             "privacy": {
-                "private": true,
+                "protected": true,
                 "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
                     "/DELETE"
+                ],
+                "unauth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH"
                 ]
-            },
-            "policyResourceName": "/items"
+            }
         }
     ],
     "resourceName": "amptool",
@@ -21,7 +30,7 @@
     ],
     "privacy": {
         "auth": 1,
-        "unauth": 0,
+        "unauth": 1,
         "authRoleName": "amplify-mbtitest-dev-104249-authRole",
         "unAuthRoleName": "amplify-mbtitest-dev-104249-unauthRole"
     },
@@ -34,5 +43,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "278bb928"
 }

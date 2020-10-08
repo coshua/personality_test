@@ -1,6 +1,6 @@
 {
     "identityPoolName": "mbtitest_identitypool_a7a96dca",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "mbtitea7a96dca",
     "userPoolName": "mbtitest_userpool_a7a96dca",
     "autoVerifiedAttributes": [
