@@ -9,8 +9,6 @@ const Statistics = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res1 = await axios.get("http://3.35.169.41:5000/api/result");
-        if (res1.data.length > 0) console.log("res1 connected");
         const res = await API.get("amptool", "/items/result");
         if (res.data.length > 0) {
           const labels = [];
