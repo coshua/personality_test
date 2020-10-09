@@ -7,12 +7,13 @@ import Result from "./components/Result";
 import Statistics from "./components/Statistics";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactHowler from "react-howler";
+import { Howl, Howler } from "howler";
 import { getLuminance } from "polished";
 import { Playlist, initialMusic } from "./components/Playlist";
 import { preloadImage } from "./components/utilFunctions";
 import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
-
+import player from "./components/Player";
 Amplify.configure(aws_exports);
 
 const GlobalStyle = createGlobalStyle`
@@ -117,8 +118,48 @@ const App = () => {
   const ukuleleRef = useRef();
   const rainRef = useRef();
 
+  const soundPlayer = [
+    {
+      title: "rain",
+      howl: null,
+    },
+    {
+      title: "satie",
+      howl: new Howl({
+        src: ["/audios/satie.mp3"],
+        loop: true,
+      }),
+    },
+    {
+      title: "tomorrow",
+      howl: new Howl({
+        src: "/audios/tomorrow.mp3",
+        loop: true,
+      }),
+    },
+    {
+      ukulele: new Howl({
+        src: ["/audios/ukulele.mp3"],
+        loop: true,
+      }),
+    },
+    {
+      memories: new Howl({
+        src: ["/audios/memories.mp3"],
+        loop: true,
+      }),
+    },
+    {
+      title: "nature",
+      howl: new Howl({
+        src: "/audios/nature.mp3",
+        loop: true,
+      }),
+    },
+  ];
+
   useEffect(() => {
-    const RefArray = [memoriesRef, tomorrowRef, ukuleleRef, rainRef];
+    /*     const RefArray = [memoriesRef, tomorrowRef, ukuleleRef, rainRef];
     setMusic(
       initialMusic.map((audio, index) => {
         return {
@@ -126,7 +167,7 @@ const App = () => {
           ref: RefArray[index],
         };
       })
-    );
+    ); */
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
     console.log(window.Kakao.isInitialized());
   }, []);
@@ -134,7 +175,7 @@ const App = () => {
   const [answer, setAnswer] = useState(""); //for statistics
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
-  const [music, setMusic] = useState(initialMusic);
+  const [music, setMusic] = useState({ title: "rain", volume: 1 });
   const [video, setVideo] = useState(null);
   const [background, setBackground] = useState({
     backgroundImage: 'url("/images/flowers.jpg")',
@@ -143,7 +184,7 @@ const App = () => {
   const [reserve, setReserve] = useState({});
 
   //로딩 걸리나 ? 끊김 없게 만들어
-  const MusicList = Playlist.map((audio, index) => {
+  /*   const MusicList = Playlist.map((audio, index) => {
     return (
       <ReactHowler
         key={index}
@@ -155,34 +196,23 @@ const App = () => {
         volume={music[index].volume}
       />
     );
-  });
+  }); */
 
   const pauseMusic = () => {
-    setMusic(music.map((music) => ({ ...music, playing: false })));
+    player.pause();
   };
 
-  const stopMusic = (fade = 3000) => {
-    let currentMusic = music.filter((music) => music.playing === true);
-    if (currentMusic.length >= 1) {
-      currentMusic[0].ref.current.howler.fade(0.5, 0, fade);
-      setTimeout(() => currentMusic[0].ref.current.stop(), fade);
-    }
+  const stopMusic = (volume = music.volume || 1, fadeDuration = 2000) => {
+    player.stop(volume, fadeDuration);
+    return fadeDuration;
   };
 
-  const playMusic = (title = "memories", fade = 8000) => {
-    stopMusic();
-    let newMusic = music.map((music) =>
-      music.title === title
-        ? { ...music, playing: true }
-        : { ...music, playing: false }
-    );
-    let currentMusic = music.filter((music) => music.title === title);
-    if (currentMusic.length >= 1) {
-      setTimeout(() => {
-        setMusic(newMusic);
-        currentMusic[0].ref.current.howler.fade(0, 0.5, fade);
-      }, 3000);
-    }
+  const playMusic = (title = "rain", volume = 1, fadeDuration = 3000) => {
+    var delay = stopMusic();
+    setMusic({ title: title, volume: volume });
+    setTimeout(() => {
+      player.play(title, volume, fadeDuration);
+    }, delay);
   };
 
   const handleVideo = (title, delay = 2000) => {
@@ -330,7 +360,13 @@ const App = () => {
             render={() => (
               <>
                 <Content>
-                  {MusicList}
+                  <button onClick={() => player.play("rain")}>rain</button>
+                  <button onClick={() => player.pause()}>pause</button>
+                  <button onClick={() => player.stop()}>stop</button>
+                  <button onClick={() => player.play("tomorrow")}>
+                    tomorrow p
+                  </button>
+                  {/* {MusicList} */}
                   {!start ? (
                     <Landing startTest={startTest} handleVideo={handleVideo} />
                   ) : index === QUESTIONS_LENGTH ? (
