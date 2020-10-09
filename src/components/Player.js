@@ -18,6 +18,11 @@ Player.prototype = {
         src: [`audios/${data.title}>webm`, `audios/${data.title}.mp3`],
         html5: true,
         loop: true,
+        xhr: {
+          headers: {
+            "Content-Type": "audio/mpeg",
+          },
+        },
       });
     }
     sound.play();
