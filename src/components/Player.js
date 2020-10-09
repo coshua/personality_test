@@ -15,7 +15,7 @@ Player.prototype = {
       sound = data.howl;
     } else {
       sound = data.howl = new Howl({
-        src: `audios/${data.title}.mp3`,
+        src: [`audios/${data.title}>webm`, `audios/${data.title}.mp3`],
         html5: true,
         loop: true,
       });
