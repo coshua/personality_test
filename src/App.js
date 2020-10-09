@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import questionnaire from "./utils/questionnaire";
 import Landing from "./components/Landing";
@@ -6,10 +6,7 @@ import Question from "./components/Question";
 import Result from "./components/Result";
 import Statistics from "./components/Statistics";
 import styled, { createGlobalStyle } from "styled-components";
-import ReactHowler from "react-howler";
-import { Howl, Howler } from "howler";
 import { getLuminance } from "polished";
-import { Playlist, initialMusic } from "./components/Playlist";
 import { preloadImage } from "./components/utilFunctions";
 import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
@@ -113,61 +110,7 @@ const videoList = {
 };
 
 const App = () => {
-  const memoriesRef = useRef();
-  const tomorrowRef = useRef();
-  const ukuleleRef = useRef();
-  const rainRef = useRef();
-
-  const soundPlayer = [
-    {
-      title: "rain",
-      howl: null,
-    },
-    {
-      title: "satie",
-      howl: new Howl({
-        src: ["/audios/satie.mp3"],
-        loop: true,
-      }),
-    },
-    {
-      title: "tomorrow",
-      howl: new Howl({
-        src: "/audios/tomorrow.mp3",
-        loop: true,
-      }),
-    },
-    {
-      ukulele: new Howl({
-        src: ["/audios/ukulele.mp3"],
-        loop: true,
-      }),
-    },
-    {
-      memories: new Howl({
-        src: ["/audios/memories.mp3"],
-        loop: true,
-      }),
-    },
-    {
-      title: "nature",
-      howl: new Howl({
-        src: "/audios/nature.mp3",
-        loop: true,
-      }),
-    },
-  ];
-
   useEffect(() => {
-    /*     const RefArray = [memoriesRef, tomorrowRef, ukuleleRef, rainRef];
-    setMusic(
-      initialMusic.map((audio, index) => {
-        return {
-          ...audio,
-          ref: RefArray[index],
-        };
-      })
-    ); */
     window.Kakao.init("77148d309b8680577a6ff34d93e29776");
     console.log(window.Kakao.isInitialized());
   }, []);
@@ -182,25 +125,6 @@ const App = () => {
     backgroundColor: "255,255,255,0.3",
   });
   const [reserve, setReserve] = useState({});
-
-  //로딩 걸리나 ? 끊김 없게 만들어
-  /*   const MusicList = Playlist.map((audio, index) => {
-    return (
-      <ReactHowler
-        key={index}
-        src={audio.src}
-        preload={true}
-        loop={true}
-        playing={music[index].playing}
-        ref={music[index].ref}
-        volume={music[index].volume}
-      />
-    );
-  }); */
-
-  const pauseMusic = () => {
-    player.pause();
-  };
 
   const stopMusic = (volume = music.volume || 1, fadeDuration = 2000) => {
     player.stop(volume, fadeDuration);
@@ -366,7 +290,7 @@ const App = () => {
                   <button onClick={() => player.play("tomorrow")}>
                     tomorrow p
                   </button>
-                  {/* {MusicList} */}
+
                   {!start ? (
                     <Landing startTest={startTest} handleVideo={handleVideo} />
                   ) : index === QUESTIONS_LENGTH ? (
@@ -388,22 +312,10 @@ const App = () => {
                   )}
                 </Content>
                 <Span>
-                  <i
-                    className="fas fa-volume-mute fa-lg"
-                    onClick={(e) => pauseMusic()}
-                  ></i>
-                  <i
-                    className="fas fa-volume-mute fa-lg"
-                    onClick={(e) => stopMusic()}
-                  ></i>
-                  <i
-                    className="fas fa-headphones fa-lg"
-                    onClick={(e) => playMusic("ukulele")}
-                  ></i>
-                  <i
-                    className="fas fa-headphones fa-lg"
-                    onClick={(e) => playMusic("tomorrow")}
-                  ></i>
+                  <i className="fas fa-volume-mute fa-lg"></i>
+                  <i className="fas fa-volume-mute fa-lg"></i>
+                  <i className="fas fa-headphones fa-lg"></i>
+                  <i className="fas fa-headphones fa-lg"></i>
                   <button
                     onClick={(e) =>
                       window.Kakao.Link.sendCustom({
