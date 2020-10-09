@@ -19,9 +19,11 @@ Player.prototype = {
         html5: true,
         loop: true,
         xhr: {
+          method: "GET",
           headers: {
             "Content-Type": "audio/mpeg",
           },
+          withCredentials: true,
         },
       });
     }
