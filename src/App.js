@@ -11,6 +11,7 @@ import { preloadImage } from "./components/utilFunctions";
 import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
 import player from "./components/Player";
+import Toast from "light-toast";
 Amplify.configure(aws_exports);
 
 const GlobalStyle = createGlobalStyle`
@@ -71,8 +72,10 @@ const Content = styled.div`
 `;
 
 const Span = styled.span`
-  margin: 1rem auto;
+  margin: 2rem 1rem;
+  display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const ShareSpan = styled.span`
@@ -118,7 +121,11 @@ const App = () => {
   const [answer, setAnswer] = useState(""); //for statistics
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
-  const [music, setMusic] = useState({ title: "rain", volume: 1 });
+  const [music, setMusic] = useState({
+    title: null,
+    volume: 1,
+    pause: false,
+  });
   const [video, setVideo] = useState(null);
   const [background, setBackground] = useState({
     backgroundImage: 'url("/images/flowers.jpg")',
@@ -127,16 +134,20 @@ const App = () => {
   const [reserve, setReserve] = useState({});
 
   const stopMusic = (volume = music.volume || 1, fadeDuration = 2000) => {
-    player.stop(volume, fadeDuration);
-    return fadeDuration;
+    if (!music.pause) {
+      player.stop(volume, fadeDuration);
+      return fadeDuration;
+    }
   };
 
   const playMusic = (title = "rain", volume = 1, fadeDuration = 3000) => {
-    var delay = stopMusic();
-    setMusic({ title: title, volume: volume });
-    setTimeout(() => {
-      player.play(title, volume, fadeDuration);
-    }, delay);
+    setMusic({ ...music, title: title, volume: volume });
+    if (!music.pause) {
+      var delay = stopMusic();
+      setTimeout(() => {
+        player.play(title, volume, fadeDuration);
+      }, delay);
+    }
   };
 
   const handleVideo = (title, delay = 2000) => {
@@ -288,9 +299,8 @@ const App = () => {
                   <button onClick={() => player.pause()}>pause</button>
                   <button onClick={() => player.stop()}>stop</button>
                   <button onClick={() => player.play("tomorrow")}>
-                    tomorrow p
+                    tomorrow
                   </button>
-
                   {!start ? (
                     <Landing startTest={startTest} handleVideo={handleVideo} />
                   ) : index === QUESTIONS_LENGTH ? (
@@ -312,11 +322,26 @@ const App = () => {
                   )}
                 </Content>
                 <Span>
-                  <i className="fas fa-volume-mute fa-lg"></i>
-                  <i className="fas fa-volume-mute fa-lg"></i>
-                  <i className="fas fa-headphones fa-lg"></i>
-                  <i className="fas fa-headphones fa-lg"></i>
-                  <button
+                  {!music.pause ? (
+                    <i
+                      className="fas fa-headphones fa-lg"
+                      onClick={() => {
+                        player.pause();
+                        setMusic({ ...music, pause: true });
+                      }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="fas fa-volume-mute fa-lg"
+                      onClick={() => {
+                        setMusic({ ...music, pause: false });
+                        player.play(music.title, music.volume, 0);
+                      }}
+                    ></i>
+                  )}
+                  <img
+                    src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png"
+                    alt="share"
                     onClick={(e) =>
                       window.Kakao.Link.sendCustom({
                         templateId: 36312,
@@ -326,24 +351,15 @@ const App = () => {
                         },
                       })
                     }
+                  />
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText("personality.jutopia.net");
+                      Toast.info("Copied to Clipboard", 2000);
+                    }}
                   >
-                    Share
+                    url
                   </button>
-                  <ShareSpan id="create-kakao-link-btn">
-                    <img
-                      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-                      alt="share"
-                      onClick={(e) =>
-                        window.Kakao.Link.sendCustom({
-                          templateId: 36312,
-                          templateArgs: {
-                            image_url:
-                              "https://myanimal.kokkiri.kr/assets/img/promotion/img_character14@2x.png",
-                          },
-                        })
-                      }
-                    />
-                  </ShareSpan>
                   <Link to="/statistics">stat</Link>
                 </Span>
               </>

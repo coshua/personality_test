@@ -18,7 +18,7 @@
           "backgroundImage": "/images/starry_night.jpg",
           "backgroundColor": "0,0,0,0.5"
         },
-        "reservedMmusic": "nature"
+        "reservedMusic": "nature"
       }
     ]
   },
@@ -27,7 +27,8 @@
     "response": [
       {
         "type": "P",
-        "answer": "가볼만한 곳을 간단하게 검색해서 대략적인 동선과 잘 곳을 생각한다."
+        "answer": "가볼만한 곳을 간단하게 검색해서 대략적인 동선과 잘 곳을 생각한다.",
+        "music": "satie"
       },
       {
         "type": "J",

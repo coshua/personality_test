@@ -1,5 +1,5 @@
-import { Howl, Howler } from "howler";
-import React from "react";
+import { Howl } from "howler";
+
 var Player = function (playlist) {
   this.playlist = playlist;
 };
@@ -8,39 +8,44 @@ Player.prototype = {
   play: function (title, volume = 1, duration = 5000) {
     var self = this;
     var sound;
+    if (title) {
+      var data = self.playlist.filter((audio) => audio.title === title)[0];
 
-    var data = self.playlist.filter((audio) => audio.title === title)[0];
-
-    if (data.howl) {
-      sound = data.howl;
-    } else {
-      sound = data.howl = new Howl({
-        src: [`audios/${data.title}>webm`, `audios/${data.title}.mp3`],
-        html5: true,
-        loop: true,
-        xhr: {
-          method: "GET",
-          headers: {
-            "Content-Type": "audio/mpeg",
+      if (data.howl) {
+        sound = data.howl;
+      } else {
+        sound = data.howl = new Howl({
+          src: [`audios/${data.title}>webm`, `audios/${data.title}.mp3`],
+          html5: true,
+          loop: true,
+          xhr: {
+            method: "GET",
+            headers: {
+              "Content-Type": "audio/mpeg",
+            },
+            withCredentials: true,
           },
-          withCredentials: true,
-        },
-      });
+        });
+      }
+      sound.play();
+      console.log(
+        "Sound play " + "Volume: " + volume + " Duration: " + duration
+      );
+      sound.fade(0, volume, duration);
+      self.title = title;
     }
-    sound.play();
-    console.log("Sound play " + "Volume: " + volume + " Duration: " + duration);
-    sound.fade(0, volume, duration);
-    self.title = title;
   },
 
   pause: function () {
     var self = this;
     console.log(self.title);
-    var data = self.playlist.filter((audio) => audio.title === self.title)[0];
-    if (data.howl) {
-      var sound = data.howl;
-      sound.pause();
-      console.log("Sound pause");
+    if (self.title) {
+      var data = self.playlist.filter((audio) => audio.title === self.title)[0];
+      if (data.howl) {
+        var sound = data.howl;
+        sound.pause();
+        console.log("Sound pause");
+      }
     }
   },
 
